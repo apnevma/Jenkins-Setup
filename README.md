@@ -37,8 +37,25 @@ docker compose up -d
 ```bash
 docker logs jenkins
 ```
+4. **Install Docker Pipiline Plugin**
+* Jenkins → Manage Jenkins → Manage Plugins
 
-4. **Install suggested plugins and create your first pipeline**
+
+5. **Install Docker CLI inside Jenkins container**  
+(so docker commands exist in PATH)
+```bash
+apt-get update
+apt-get install -y docker.io
+```
+
+6. **Add Jenkins user to the correct group**  
+(the group that owns /var/run/docker.sock, which in this case was _ssh)  
+Without this step, Jenkins could “see” the socket but couldn’t use it.  
+```bash
+usermod -aG _ssh jenkins
+docker restart jenkins
+```
+
 
 ## Notes
 
