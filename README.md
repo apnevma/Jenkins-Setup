@@ -24,3 +24,24 @@ This setup allows you to experiment with Jenkins pipelines, Docker builds, and C
 ```bash
 git clone <https://github.com/apnevma/Jenkins-Setup.git>
 cd <Jenkins-Setup>
+```
+
+2. **Start Jenkins**
+```bash
+docker compose up -d
+```
+
+3. **Access Jenkins**
+* Open a browser and go to http://localhost:8080
+* Unlock Jenkins using the password from the logs:
+```bash
+docker logs jenkins
+```
+
+4. **Install suggested plugins and create your first pipeline**
+
+## Notes
+
+* Jenkins has access to host Docker, so you can run builds that spin up containers.
+* The `jenkins_home` volume ensures that job configurations persist across container restarts.
+* This setup is meant for local development and learning purposes. For production use, consider security best practices for Docker socket access and volume management.
