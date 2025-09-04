@@ -26,9 +26,9 @@ git clone <https://github.com/apnevma/Jenkins-Setup.git>
 cd <Jenkins-Setup>
 ```
 
-2. **Start Jenkins**
+2. **Build and Start Jenkins**
 ```bash
-docker compose up -d
+docker compose up --build -d
 ```
 
 3. **Access Jenkins**
@@ -38,23 +38,17 @@ docker compose up -d
 docker logs jenkins
 ```
 4. **Install Docker Pipiline Plugin**
-* Jenkins → Manage Jenkins → Manage Plugins
+* In Jenkins → Manage Jenkins → Manage Plugins → Available → Search for Docker Pipeline → Install.
 
 
-5. **Install Docker CLI inside Jenkins container**  
-(so docker commands exist in PATH)
-```bash
-apt-get update
-apt-get install -y docker.io
-```
 
-6. **Add Jenkins user to the correct group**  
-(the group that owns /var/run/docker.sock, which in this case was _ssh)  
-Without this step, Jenkins could “see” the socket but couldn’t use it.  
-```bash
-usermod -aG _ssh jenkins
-docker restart jenkins
-```
+## Permanent Docker CLI & Socket Access 
+The container needs Docker CLI and permission to access the Docker socket. This is already baked into the provided Dockerfile, but here’s what happens:
+1. Docker CLI is installed inside the container (`docker.io` package).
+2. The Jenkins user is added to the group that owns `/var/run/docker.sock` (on Windows with Rancher Desktop, typically `_ssh`).
+3. This allows Jenkins pipelines to run Docker commands without permission errors.  
+
+No additional manual steps are needed — everything is permanent after the container is built.
 
 
 ## Notes
