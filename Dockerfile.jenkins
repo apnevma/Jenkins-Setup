@@ -1,0 +1,16 @@
+# Base Jenkins image
+FROM jenkins/jenkins:lts
+
+# Switch to root to install Docker CLI
+USER root
+
+# Install Docker CLI + docker-compose (v1)
+RUN apt-get update && \
+    apt-get install -y docker.io docker-compose && \
+    rm -rf /var/lib/apt/lists/*
+
+# Add 'jenkins' user to the '_ssh' group so it can use /var/run/docker.sock
+RUN usermod -aG _ssh jenkins
+
+# Switch back to Jenkins user
+USER jenkins
